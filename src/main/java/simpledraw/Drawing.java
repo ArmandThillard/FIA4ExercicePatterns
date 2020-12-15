@@ -74,6 +74,10 @@ public class Drawing {
 		shapeGroups.add(sg);
 	}
 
+	public void deleteShapeGroup(ShapeGroup sg) {
+		shapeGroups.remove(sg);
+	}
+	
 	public List<ShapeGroup> getShapeGroups() {
 		return shapeGroups;
 	}

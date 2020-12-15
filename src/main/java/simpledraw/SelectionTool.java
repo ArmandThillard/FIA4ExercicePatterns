@@ -31,9 +31,16 @@ public class SelectionTool
 		if (e.getKeyChar() == 'g') {
 			if (mySelectedShape != null) {
 				myDrawing.addShapeGroup(new ShapeGroup(mySelectedShapes));
-				System.out.println("Group");
-
-				System.out.println(myDrawing.getShapeGroups().size());
+			}
+		}
+		if (e.getKeyChar() == 'u') {
+			if (mySelectedShape != null) {
+				List<ShapeGroup> groups =  myDrawing.getShapeGroups();
+				for(ShapeGroup sg : groups) {
+					if(sg.getShapes().contains(mySelectedShape)) {
+						myDrawing.deleteShapeGroup(sg);
+					}
+				}
 			}
 		}
 		if (e.getKeyChar() == KeyEvent.VK_DELETE) {
@@ -55,11 +62,9 @@ public class SelectionTool
 				if(!mySelectedShapes.contains(mySelectedShape)) {
 					mySelectedShapes.add(mySelectedShape);
 				}
-				System.out.println(mySelectedShapes.size());
 			} else {
 				myDrawing.clearSelection();
 				mySelectedShapes.clear();
-				System.out.println(mySelectedShapes.size());
 			}
 			
 		}
@@ -72,6 +77,7 @@ public class SelectionTool
 			}
 			mySelectedShape = pickedShape;
 			if (mySelectedShape != null) {
+				mySelectedShapes.add(mySelectedShape);
 				List<ShapeGroup> groups = myDrawing.getShapeGroups();
 				for(ShapeGroup sg : groups) {
 					List<Shape> groupedShapes = sg.getShapes();
@@ -107,12 +113,14 @@ public class SelectionTool
 
 	public void mouseDragged(MouseEvent e) {
 		if (mySelectedShape != null) {
-			mySelectedShape.translateBy(
-				e.getX() - myLastPoint.x,
-				e.getY() - myLastPoint.y
-				);
-			myLastPoint = e.getPoint();
-        		myPanel.repaint();
+			for(Shape s : mySelectedShapes) {
+				s.translateBy(
+						e.getX() - myLastPoint.x,
+						e.getY() - myLastPoint.y
+						);
+			}
+			myLastPoint = e.getPoint();			
+    		myPanel.repaint();
 		}
 	}
 
