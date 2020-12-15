@@ -6,6 +6,10 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
+import java.util.LinkedList;
+import java.util.List;
+
+import javax.swing.SwingUtilities;
 
 /**
  * The tool to select, move and delete Shapes in the Drawing
@@ -17,12 +21,21 @@ public class SelectionTool
 	extends DrawingTool {
 	private Shape mySelectedShape = null;
 	private Point myLastPoint;
+	private List<Shape> mySelectedShapes = new LinkedList<Shape>();
 
 	public SelectionTool(DrawingPanel panel) {
 		super(panel);
 	}
 
 	public void keyPressed(KeyEvent e) {
+		if (e.getKeyChar() == 'g') {
+			if (mySelectedShape != null) {
+				myDrawing.addShapeGroup(new ShapeGroup(mySelectedShapes));
+				System.out.println("Group");
+
+				System.out.println(myDrawing.getShapeGroups().size());
+			}
+		}
 		if (e.getKeyChar() == KeyEvent.VK_DELETE) {
 			if (mySelectedShape != null) {
 				myDrawing.deleteShape(mySelectedShape);
@@ -34,14 +47,46 @@ public class SelectionTool
 	public void mousePressed(MouseEvent e) {
 		Shape pickedShape = myDrawing.pickShapeAt(e.getPoint());
 		myLastPoint = e.getPoint();
-		if (mySelectedShape != null) {
-			mySelectedShape.setSelected(false);
+		if(e.getButton() == MouseEvent.BUTTON3) {
+			System.out.println("Right click");
+			if (pickedShape != null) {
+				mySelectedShape = pickedShape;
+				mySelectedShape.setSelected(true);
+				if(!mySelectedShapes.contains(mySelectedShape)) {
+					mySelectedShapes.add(mySelectedShape);
+				}
+				System.out.println(mySelectedShapes.size());
+			} else {
+				myDrawing.clearSelection();
+				mySelectedShapes.clear();
+				System.out.println(mySelectedShapes.size());
+			}
+			
 		}
-		mySelectedShape = pickedShape;
-		if (mySelectedShape != null) {
-			mySelectedShape.setSelected(true);
-			myPanel.setCursor(Cursor.getPredefinedCursor(Cursor.
-				MOVE_CURSOR));
+		
+
+		if(e.getButton() == MouseEvent.BUTTON1) {
+			System.out.println("Left click");
+			if (mySelectedShape != null) {
+				myDrawing.clearSelection();
+			}
+			mySelectedShape = pickedShape;
+			if (mySelectedShape != null) {
+				List<ShapeGroup> groups = myDrawing.getShapeGroups();
+				for(ShapeGroup sg : groups) {
+					List<Shape> groupedShapes = sg.getShapes();
+					if(groupedShapes.contains(mySelectedShape)) {
+						for(Shape s : groupedShapes) {
+							s.setSelected(true);
+						}
+					}
+				}
+				if(!mySelectedShape.isSelected()) {
+					mySelectedShape.setSelected(true);
+				}
+				myPanel.setCursor(Cursor.getPredefinedCursor(Cursor.
+					MOVE_CURSOR));
+			}
 		}
 		myPanel.repaint();
 	}
