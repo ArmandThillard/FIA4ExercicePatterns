@@ -62,11 +62,9 @@ public class SelectionTool
 				if(!mySelectedShapes.contains(mySelectedShape)) {
 					mySelectedShapes.add(mySelectedShape);
 				}
-				System.out.println(mySelectedShapes.size());
 			} else {
 				myDrawing.clearSelection();
 				mySelectedShapes.clear();
-				System.out.println(mySelectedShapes.size());
 			}
 			
 		}
@@ -120,9 +118,8 @@ public class SelectionTool
 						e.getX() - myLastPoint.x,
 						e.getY() - myLastPoint.y
 						);
-				myLastPoint = e.getPoint();
-//	    		myPanel.repaint();
 			}
+			myLastPoint = e.getPoint();			
     		myPanel.repaint();
 		}
 	}
