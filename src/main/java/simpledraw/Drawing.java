@@ -18,8 +18,10 @@ public class Drawing {
 	 */
 	private List<Shape> myShapes = new LinkedList<Shape>();
 	private List<ShapeGroup> shapeGroups = new LinkedList<ShapeGroup>();
+        private Set<ShapeViews> myViews = new java.util.HashSet<ShapeViews> ();
 
 	public Drawing() {
+            addView(new ConsoleView());
 	}
 
 	/**
@@ -37,6 +39,7 @@ public class Drawing {
 	 **/
 	public void addShape(Shape s) {
 		myShapes.add(s);
+                notifyAllViews();
 	}
 
 	/**
@@ -45,6 +48,7 @@ public class Drawing {
 	 **/
 	public void deleteShape(Shape s) {
 		myShapes.remove(s);
+                notifyAllViews();
 	}
 
 	/**
@@ -68,6 +72,7 @@ public class Drawing {
 	public void clearSelection() {
 		for (Shape s : myShapes)
 			s.setSelected(false);
+                notifyAllViews();
 	}
 
 	public void addShapeGroup(ShapeGroup sg) {
@@ -85,4 +90,13 @@ public class Drawing {
 	public List<Shape> getShapes() {
 		return myShapes;
 	}
+        
+        private void addView(ShapeViews view) {
+		myViews.add(view);
+	}
+        public void notifyAllViews() {
+            if (null != myViews) 
+			for (ShapeViews view : myViews) 
+				view.notify(this);
+        }
 }

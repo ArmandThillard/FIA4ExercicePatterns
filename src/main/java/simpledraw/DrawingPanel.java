@@ -3,6 +3,7 @@ package simpledraw;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
+import java.util.Set;
 import javax.swing.JPanel;
 
 /**
@@ -15,10 +16,10 @@ import javax.swing.JPanel;
  */
 
 public class DrawingPanel
-	extends JPanel {
+	extends JPanel implements ShapeViews{
 	DrawingTool myCurrentTool;
 	Drawing myDrawing = new Drawing();
-
+        
 	public DrawingPanel() {
 		super();
 		setBackground(java.awt.Color.white);
@@ -70,5 +71,8 @@ public class DrawingPanel
             addMouseListener(t);
             addMouseMotionListener(t);
         }
+       public void notify(Drawing drw) {
+		repaint();
+	}
 
 }

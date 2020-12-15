@@ -16,7 +16,11 @@ public class PolyLine
 	 * The points of this PolyLine
 	 */
 	private final List<Point> myPoints;
-
+        
+        @Override
+        public String toString() {
+            return "PolyLine";
+        }
 	public PolyLine(Collection<Point> points) {
 		if (points.size() < 2) {
 			throw new IllegalArgumentException(

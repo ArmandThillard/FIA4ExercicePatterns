@@ -11,6 +11,8 @@ import java.awt.Point;
 
 public abstract class Shape {
 	private boolean iAmSelected = false;
+        
+       
 	/**
 	 * Is this shape selected ?
 	 * @return true if selected, false otherwise

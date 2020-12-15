@@ -12,7 +12,11 @@ public class Circle
 	extends Shape {
 	private Point myCenter;
 	private int myRadius;
-
+        
+        @Override
+        public String toString() {
+            return "Circle ("+ myCenter + ")  - radius " + myRadius;
+        }
 	/**
 	 * Construct a Circle
 	 * @param center        The center of the circle
