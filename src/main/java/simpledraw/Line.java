@@ -15,6 +15,11 @@ public class Line
 	private Point myStart;
 	private Point myEnd;
 
+        
+        @Override
+        public String toString() {
+            return "Line - Start (" + myStart + ")   end (" + myEnd + ")";
+        }
 	/**
 	 * Construct a line
 	 * @param start The starting point
